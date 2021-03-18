@@ -15,6 +15,39 @@ namespace List
             Length = 0;
             _array = new int[10];
         }
+        public ArrayList(int length)
+        {
+            if (length < 0)
+            {
+                throw new ArgumentException("Длина массива не может быть отрицательной");
+            }
+            Length = length;
+            _array = new int[Length];
+        }
+        public ArrayList(int[] array)
+        {
+            if (array.Length < 0)
+            {
+                throw new ArgumentException("Длина массива не может быть отрицательной");
+            }
+            _array = array;
+            Length = _array.Length;
+        }
+        public int this[int index]
+        {
+            get
+            {
+                if (index > Length || index < 0)
+                {
+                    throw new IndexOutOfRangeException("Индекс не входит в массив");
+                }
+                return _array[index];
+            }
+            set
+            {
+                _array[index] = value;
+            }
+        }
         public void Add(int value)
         {
             if (Length == _array.Length)
@@ -30,6 +63,10 @@ namespace List
         }
         public void AddByIndex(int value, int index)
         {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
             if (Length == _array.Length)
             {
                 UpSize();
@@ -43,10 +80,13 @@ namespace List
         }
         public void RemoveLast()
         {
-            Length--;
-            if (Length <= (_array.Length / 2))
+            if (Length != 0)
             {
-                DownSize();
+                Length--;
+                if (Length <= (_array.Length / 2))
+                {
+                    DownSize();
+                }
             }
         }
         public void RemoveFirst()
@@ -55,18 +95,40 @@ namespace List
         }
         public void RemoveByIndex(int index)
         {
-            for (int i = index; i < Length - 1; i++)
+            if (Length != 0)
             {
-                _array[i] = _array[i + 1];
+                if (index > Length || index < 0)
+                {
+                    throw new IndexOutOfRangeException("индекс не входит в массив");
+                }
+                for (int i = index; i < Length - 1; i++)
+                {
+                    _array[i] = _array[i + 1];
+                }
+                Length--;
+                if (Length <= (_array.Length / 2))
+                {
+                    DownSize();
+                }
             }
-            Length--;
-            if (Length <= (_array.Length / 2))
+            else
             {
-                DownSize();
+                if (index > Length || index < 0)
+                {
+                    throw new IndexOutOfRangeException("индекс не входит в массив");
+                }
             }
         }
         public void RemoveLastElements(int n)
         {
+            if (n > Length)
+            {
+                throw new ArgumentOutOfRangeException("массив меньше количества удаляемых элементов");
+            }
+            if (n < 0)
+            {
+                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
+            }
             Length -= n;
             if (Length <= (_array.Length / 2))
             {
@@ -79,6 +141,18 @@ namespace List
         }
         public void RemoveByIndexElements(int index, int n)
         {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
+            if (Length - index < n)
+            {
+                throw new IndexOutOfRangeException("длина массива после индекса меньше количества удаляемых элементов");
+            }
+            if (n < 0)
+            {
+                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
+            }
             for (int i = index; i < Length - n; i++)
             {
                 _array[i] = _array[i + n];
@@ -91,6 +165,10 @@ namespace List
         }
         public int GetByIndex(int index)
         {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
             return _array[index];
         }
         public int GetIndexByValue(int value)
@@ -108,6 +186,10 @@ namespace List
         }
         public void ChangeValueByIndex(int index, int value)
         {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
             _array[index] = value;
         }
 
@@ -124,6 +206,10 @@ namespace List
         }
         public int GetMax()
         {
+            if (Length <= 0)
+            {
+                throw new IndexOutOfRangeException("массив пустой");
+            }
             int max = _array[0];
             for (int i = 1; i < Length; i++)
             {
@@ -136,6 +222,10 @@ namespace List
         }
         public int GetMin()
         {
+            if (Length <= 0)
+            {
+                throw new IndexOutOfRangeException("массив пустой");
+            }
             int min = _array[0];
             for (int i = 1; i < Length; i++)
             {
@@ -148,6 +238,10 @@ namespace List
         }
         public int GetMaxIndex()
         {
+            if (Length <= 0)
+            {
+                throw new IndexOutOfRangeException("массив пустой");
+            }
             int max = _array[0];
             int index = 0;
             for (int i = 1; i < Length; i++)
@@ -162,6 +256,10 @@ namespace List
         }
         public int GetMinIndex()
         {
+            if (Length <= 0)
+            {
+                throw new IndexOutOfRangeException("массив пустой");
+            }
             int min = _array[0];
             int index = 0;
 
@@ -208,7 +306,7 @@ namespace List
                 }
             }
         }
-        public int DeleteFirstByValue(int x)
+        public int RemoveFirstByValue(int x)
         {
             int index = GetIndexByValue(x);
             if (index > 0)
@@ -217,7 +315,7 @@ namespace List
             }
             return index;
         }
-        public int DeleteAllByValue(int x)
+        public int RemoveAllByValue(int x)
         {
             int index = 0;
             int sum = -1;
@@ -235,6 +333,36 @@ namespace List
                 sum++;
             }
             return sum;
+        }
+        public override bool Equals(object obj)
+        {
+            ArrayList arrayList = (ArrayList)obj;
+            if (this.Length != arrayList.Length)
+            {
+                return false;
+            }
+            for (int i = 0; i < Length; i++)
+            {
+                if (this._array[i] != arrayList._array[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public override string ToString()
+        {
+            string s = "";
+            for (int i = 0; i < Length; i++)
+            {
+                s += _array[i] + ", ";
+            }
+            return s;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
         private void UpSize()
         {
