@@ -15,21 +15,14 @@ namespace List
             Length = 0;
             _array = new int[10];
         }
-        public ArrayList(int length)
+        public ArrayList(int value)
         {
-            if (length < 0)
-            {
-                throw new ArgumentException("Длина массива не может быть отрицательной");
-            }
-            Length = length;
-            _array = new int[Length];
+            Length = 1;
+            _array = new int[10];
+            _array[0] = value;
         }
         public ArrayList(int[] array)
         {
-            if (array.Length < 0)
-            {
-                throw new ArgumentException("Длина массива не может быть отрицательной");
-            }
             _array = array;
             Length = _array.Length;
         }
@@ -82,11 +75,18 @@ namespace List
         {
             if (Length != 0)
             {
-                Length--;
-                if (Length <= (_array.Length / 2))
+                if (Length != 0)
                 {
-                    DownSize();
+                    Length--;
+                    if (Length < (_array.Length / 2))
+                    {
+                        DownSize();
+                    }
                 }
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("массив пустой");
             }
         }
         public void RemoveFirst()
@@ -106,17 +106,14 @@ namespace List
                     _array[i] = _array[i + 1];
                 }
                 Length--;
-                if (Length <= (_array.Length / 2))
+                if (Length < (_array.Length / 2))
                 {
                     DownSize();
                 }
             }
             else
             {
-                if (index > Length || index < 0)
-                {
-                    throw new IndexOutOfRangeException("индекс не входит в массив");
-                }
+                throw new IndexOutOfRangeException("массив пустой");
             }
         }
         public void RemoveLastElements(int n)
@@ -130,7 +127,7 @@ namespace List
                 throw new ArgumentException("нельзя удалить отрицательное количество элементов");
             }
             Length -= n;
-            if (Length <= (_array.Length / 2))
+            if (Length < (_array.Length / 2))
             {
                 DownSize();
             }
@@ -158,19 +155,12 @@ namespace List
                 _array[i] = _array[i + n];
             }
             Length -= n;
-            if (Length <= (_array.Length / 2))
+            if (Length < (_array.Length / 2))
             {
                 DownSize();
             }
         }
-        public int GetByIndex(int index)
-        {
-            if (index > Length || index < 0)
-            {
-                throw new IndexOutOfRangeException("индекс не входит в массив");
-            }
-            return _array[index];
-        }
+
         public int GetIndexByValue(int value)
         {
             int index = -1;
@@ -183,14 +173,6 @@ namespace List
                 }
             }
             return index;
-        }
-        public void ChangeValueByIndex(int index, int value)
-        {
-            if (index > Length || index < 0)
-            {
-                throw new IndexOutOfRangeException("индекс не входит в массив");
-            }
-            _array[index] = value;
         }
 
         public void Reverse()
@@ -252,7 +234,7 @@ namespace List
                     index = i;
                 }
             }
-            return index + 1;
+            return index;
         }
         public int GetMinIndex()
         {
@@ -271,7 +253,7 @@ namespace List
                     index = i;
                 }
             }
-            return index + 1;
+            return index;
         }
         public void UpSort()
         {
@@ -328,7 +310,7 @@ namespace List
                     sum++;
                 }
             }
-            if (sum > 0)
+            if (sum >= 0)
             {
                 sum++;
             }
@@ -356,10 +338,10 @@ namespace List
             string s = "";
             for (int i = 0; i < Length; i++)
             {
-                s += _array[i] + ", ";
+                s += _array[i] + " ";
             }
             return s;
-        }
+        } 
         public override int GetHashCode()
         {
             return base.GetHashCode();
