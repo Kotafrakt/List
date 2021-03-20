@@ -75,13 +75,10 @@ namespace List
         {
             if (Length != 0)
             {
-                if (Length != 0)
+                Length--;
+                if (Length < (_array.Length / 2))
                 {
-                    Length--;
-                    if (Length < (_array.Length / 2))
-                    {
-                        DownSize();
-                    }
+                    DownSize();
                 }
             }
             else

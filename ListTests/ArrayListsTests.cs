@@ -337,5 +337,11 @@ namespace ListTests
             ArrayList array = new ArrayList(actualArray);
             Assert.Throws<IndexOutOfRangeException>(() => array.GetMinIndex());
         }
+        [TestCase(1, -5, new int[] { 1, 2, 3 })]
+        public void AddByIndexException3(int value, int index, int[] actualArray)
+        {
+            ArrayList array = new ArrayList(actualArray);
+            Assert.Throws<IndexOutOfRangeException>(() => { int t = array[index]; });
+        }
     }
 }
