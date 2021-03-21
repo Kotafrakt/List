@@ -328,29 +328,6 @@ namespace List
             Length = Length * 2;
         }
 
-        private void CheckIndexException(int index)
-        {
-            if (index > Length || index < 0)
-            {
-                throw new IndexOutOfRangeException("индекс не входит в массив");
-            }
-        }
-        private void CheckLengthZeroException()
-        {
-            if (Length <= 0)
-            {
-                throw new IndexOutOfRangeException("массив пустой");
-            }
-        }
-
-        private void CheckElements(int n)
-        {
-            if (n < 0)
-            {
-                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
-            }
-        }
-
         public override bool Equals(object obj)
         {
             ArrayList arrayList = (ArrayList)obj;
@@ -400,6 +377,29 @@ namespace List
                 tmpArray[i] = _array[i];
             }
             _array = tmpArray;
+        }
+
+        private void CheckIndexException(int index)
+        {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
+        }
+        private void CheckLengthZeroException()
+        {
+            if (Length <= 0)
+            {
+                throw new IndexOutOfRangeException("массив пустой");
+            }
+        }
+
+        private void CheckElements(int n)
+        {
+            if (n < 0)
+            {
+                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
+            }
         }
     }
 }
