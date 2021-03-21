@@ -30,10 +30,7 @@ namespace List
         {
             get
             {
-                if (index > Length || index < 0)
-                {
-                    throw new IndexOutOfRangeException("Индекс не входит в массив");
-                }
+                CheckIndexException(index);
                 return _array[index];
             }
             set
@@ -56,10 +53,7 @@ namespace List
         }
         public void AddByIndex(int value, int index)
         {
-            if (index > Length || index < 0)
-            {
-                throw new IndexOutOfRangeException("индекс не входит в массив");
-            }
+            CheckIndexException(index);
             if (Length == _array.Length)
             {
                 UpSize();
@@ -83,7 +77,7 @@ namespace List
             }
             else
             {
-                throw new IndexOutOfRangeException("массив пустой");
+                CheckLengthZeroException();
             }
         }
         public void RemoveFirst()
@@ -94,10 +88,7 @@ namespace List
         {
             if (Length != 0)
             {
-                if (index > Length || index < 0)
-                {
-                    throw new IndexOutOfRangeException("индекс не входит в массив");
-                }
+                CheckIndexException(index);
                 for (int i = index; i < Length - 1; i++)
                 {
                     _array[i] = _array[i + 1];
@@ -110,7 +101,7 @@ namespace List
             }
             else
             {
-                throw new IndexOutOfRangeException("массив пустой");
+                CheckLengthZeroException();
             }
         }
         public void RemoveLastElements(int n)
@@ -119,10 +110,7 @@ namespace List
             {
                 throw new ArgumentOutOfRangeException("массив меньше количества удаляемых элементов");
             }
-            if (n < 0)
-            {
-                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
-            }
+            CheckElements(n);
             Length -= n;
             if (Length < (_array.Length / 2))
             {
@@ -135,18 +123,12 @@ namespace List
         }
         public void RemoveByIndexElements(int index, int n)
         {
-            if (index > Length || index < 0)
-            {
-                throw new IndexOutOfRangeException("индекс не входит в массив");
-            }
+            CheckIndexException(index);
             if (Length - index < n)
             {
                 throw new IndexOutOfRangeException("длина массива после индекса меньше количества удаляемых элементов");
             }
-            if (n < 0)
-            {
-                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
-            }
+            CheckElements(n);
             for (int i = index; i < Length - n; i++)
             {
                 _array[i] = _array[i + n];
@@ -185,10 +167,7 @@ namespace List
         }
         public int GetMax()
         {
-            if (Length <= 0)
-            {
-                throw new IndexOutOfRangeException("массив пустой");
-            }
+            CheckLengthZeroException();
             int max = _array[0];
             for (int i = 1; i < Length; i++)
             {
@@ -201,10 +180,7 @@ namespace List
         }
         public int GetMin()
         {
-            if (Length <= 0)
-            {
-                throw new IndexOutOfRangeException("массив пустой");
-            }
+            CheckLengthZeroException();
             int min = _array[0];
             for (int i = 1; i < Length; i++)
             {
@@ -217,10 +193,7 @@ namespace List
         }
         public int GetMaxIndex()
         {
-            if (Length <= 0)
-            {
-                throw new IndexOutOfRangeException("массив пустой");
-            }
+            CheckLengthZeroException();
             int max = _array[0];
             int index = 0;
             for (int i = 1; i < Length; i++)
@@ -235,10 +208,7 @@ namespace List
         }
         public int GetMinIndex()
         {
-            if (Length <= 0)
-            {
-                throw new IndexOutOfRangeException("массив пустой");
-            }
+            CheckLengthZeroException();
             int min = _array[0];
             int index = 0;
 
@@ -313,6 +283,74 @@ namespace List
             }
             return sum;
         }
+        public void CopyArrayAtTheEnd()
+        {
+            int[] tmpArray = new int[_array.Length * 2];
+            for (int i = 0; i < _array.Length; i++)
+            {
+                tmpArray[i] = _array[i];
+            }
+            _array = tmpArray;
+            int j = 0;
+            for (int i = Length; i < Length * 2; i++)
+            {
+                _array[i] = _array[j];
+                j++;
+            }
+            Length = Length * 2;
+        }
+        // нужен ли вообще этот метод?
+        public void CopyArrayAtTheStart()
+        {
+            CopyArrayAtTheEnd();
+        }
+        public void CopyArrayAtTheIndex(int index)
+        {
+            CheckIndexException(index);
+            int[] tmpArray = new int[_array.Length * 2];
+            for (int i = 0; i < _array.Length; i++)
+            {
+                tmpArray[i] = _array[i];
+            }
+            _array = tmpArray;
+            int j = 0;
+            for (int i = Length + index; i < Length * 2; i++)
+            {
+                _array[i] = _array[j + index];
+                j++;
+            }
+            j = 0;
+            for (int i = Length + index - 1; i > index - 1; i--)
+            {
+                _array[i] = _array[Length - j - 1];
+                j++;
+            }
+            Length = Length * 2;
+        }
+
+        private void CheckIndexException(int index)
+        {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
+        }
+        private void CheckLengthZeroException()
+        {
+            if (Length <= 0)
+            {
+                throw new IndexOutOfRangeException("массив пустой");
+            }
+        }
+
+        private void CheckElements(int n)
+        {
+            if (n < 0)
+            {
+                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
+            }
+        }
+
         public override bool Equals(object obj)
         {
             ArrayList arrayList = (ArrayList)obj;

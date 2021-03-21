@@ -252,6 +252,42 @@ namespace ListTests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase(new int[] { 1, 2, 3, 1, 2, 3 }, new int[] { 1, 2, 3 })]
+        [TestCase(new int[] { 1, 2, 1, 2 }, new int[] { 1, 2 })]
+        [TestCase(new int[] { }, new int[] { })]
+
+        public void CopyArrayAtTheEnd_WhenAllCondition_CopyArrayAtTheEnd( int[] expectedArray, int[] actualArray)
+        {
+            ArrayList expected = new ArrayList(expectedArray);
+            ArrayList actual = new ArrayList(actualArray);
+            actual.CopyArrayAtTheEnd();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(new int[] { 1, 2, 3, 1, 2, 3 }, new int[] { 1, 2, 3 })]
+        [TestCase(new int[] { 1, 2, 1, 2 }, new int[] { 1, 2 })]
+        [TestCase(new int[] { }, new int[] { })]
+
+        public void CopyArrayAtTheStart_WhenAllCondition_CopyArrayAtTheStart( int[] expectedArray, int[] actualArray)
+        {
+            ArrayList expected = new ArrayList(expectedArray);
+            ArrayList actual = new ArrayList(actualArray);
+            actual.CopyArrayAtTheStart();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(0, new int[] { 1, 2, 3, 1, 2, 3 }, new int[] { 1, 2, 3 })]
+        [TestCase(2, new int[] { 1, 2, 1, 2, 3, 3 }, new int[] { 1, 2, 3 })]
+        [TestCase(0, new int[] { }, new int[] { })]
+
+        public void CopyArrayAtTheIndex_WhenAllCondition_CopyArrayAtTheIndex(int index, int[] expectedArray, int[] actualArray)
+        {
+            ArrayList expected = new ArrayList(expectedArray);
+            ArrayList actual = new ArrayList(actualArray);
+            actual.CopyArrayAtTheIndex(index);
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestCase(1, -5, new int[] { 1, 2, 3 })]
         public void AddByIndexException(int value, int index, int[] actualArray)
         {
@@ -342,6 +378,15 @@ namespace ListTests
         {
             ArrayList array = new ArrayList(actualArray);
             Assert.Throws<IndexOutOfRangeException>(() => { int t = array[index]; });
+        }
+
+        [TestCase(-1, new int[] { 1, 2, 3 })]
+        [TestCase(4, new int[] { 1, 2, 3 })]
+
+        public void CopyArrayAtTheIndexException(int index, int[] actualArray)
+        {
+            ArrayList array = new ArrayList(actualArray);
+            Assert.Throws<IndexOutOfRangeException>(() => array.CopyArrayAtTheIndex(index));
         }
     }
 }
