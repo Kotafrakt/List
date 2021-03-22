@@ -285,24 +285,11 @@ namespace List
         }
         public void CopyArrayAtTheEnd()
         {
-            int[] tmpArray = new int[_array.Length * 2];
-            for (int i = 0; i < _array.Length; i++)
-            {
-                tmpArray[i] = _array[i];
-            }
-            _array = tmpArray;
-            int j = 0;
-            for (int i = Length; i < Length * 2; i++)
-            {
-                _array[i] = _array[j];
-                j++;
-            }
-            Length = Length * 2;
+            CopyArrayAtTheIndex(Length);
         }
-        // нужен ли вообще этот метод?
         public void CopyArrayAtTheStart()
         {
-            CopyArrayAtTheEnd();
+            CopyArrayAtTheIndex(0);
         }
         public void CopyArrayAtTheIndex(int index)
         {

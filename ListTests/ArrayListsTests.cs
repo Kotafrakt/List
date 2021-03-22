@@ -1,8 +1,7 @@
 using NUnit.Framework;
-using List;
 using System;
 
-namespace ListTests
+namespace List.Tests
 {
     public class ArrayListsTests
     {
