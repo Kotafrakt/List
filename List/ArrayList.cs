@@ -258,7 +258,7 @@ namespace List
         public int RemoveFirstByValue(int x)
         {
             int index = GetIndexByValue(x);
-            if (index > 0)
+            if (index >= 0)
             {
                 RemoveByIndex(index);
             }
@@ -293,26 +293,27 @@ namespace List
         }
         public void CopyArrayAtTheIndex(int index)
         {
-            CheckIndexException(index);
-            int[] tmpArray = new int[_array.Length * 2];
-            for (int i = 0; i < _array.Length; i++)
-            {
-                tmpArray[i] = _array[i];
-            }
-            _array = tmpArray;
-            int j = 0;
-            for (int i = Length + index; i < Length * 2; i++)
-            {
-                _array[i] = _array[j + index];
-                j++;
-            }
-            j = 0;
-            for (int i = Length + index - 1; i > index - 1; i--)
-            {
-                _array[i] = _array[Length - j - 1];
-                j++;
-            }
-            Length = Length * 2;
+            //CheckIndexException(index);
+            //int[] tmpArray = new int[_array.Length * 2];
+            //for (int i = 0; i < _array.Length; i++)
+            //{
+            //    tmpArray[i] = _array[i];
+            //}
+            //_array = tmpArray;
+            //int j = 0;
+            //for (int i = Length + index; i < Length * 2; i++)
+            //{
+            //    _array[i] = _array[j + index];
+            //    j++;
+            //}
+            //j = 0;
+            //for (int i = Length + index - 1; i > index - 1; i--)
+            //{
+            //    _array[i] = _array[Length - j - 1];
+            //    j++;
+            //}
+            //Length = Length * 2;
+
         }
 
         public override bool Equals(object obj)
