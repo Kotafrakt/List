@@ -251,39 +251,39 @@ namespace List.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase(new int[] { 1, 2, 3, 1, 2, 3 }, new int[] { 1, 2, 3 })]
-        [TestCase(new int[] { 1, 2, 1, 2 }, new int[] { 1, 2 })]
-        [TestCase(new int[] { }, new int[] { })]
+        [TestCase(new int[] { 1, 2, 3, 22, 33, 44  }, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
+        [TestCase(new int[] { 1, 2, 22, 33, 44 }, new int[] { 1, 2 }, new int[] { 22, 33, 44 })]
+        [TestCase(new int[] { 22, 33, 44 }, new int[] { }, new int[] { 22, 33, 44 })]
 
-        public void CopyArrayAtTheEnd_WhenAllCondition_CopyArrayAtTheEnd( int[] expectedArray, int[] actualArray)
+        public void CopyArrayAtTheEnd_WhenAllCondition_CopyArrayAtTheEnd( int[] expectedArray, int[] actualArray, int[] newArray)
         {
             ArrayList expected = new ArrayList(expectedArray);
             ArrayList actual = new ArrayList(actualArray);
-            actual.CopyArrayAtTheEnd();
+            actual.CopyArrayAtTheEnd(newArray);
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase(new int[] { 1, 2, 3, 1, 2, 3 }, new int[] { 1, 2, 3 })]
-        [TestCase(new int[] { 1, 2, 1, 2 }, new int[] { 1, 2 })]
-        [TestCase(new int[] { }, new int[] { })]
+        [TestCase(new int[] { 22, 33, 44, 1, 2, 3 }, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
+        [TestCase(new int[] { 22, 33, 44, 1, 2 }, new int[] { 1, 2 }, new int[] { 22, 33, 44 })]
+        [TestCase(new int[] { 22, 33, 44 }, new int[] { }, new int[] { 22, 33, 44 })]
 
-        public void CopyArrayAtTheStart_WhenAllCondition_CopyArrayAtTheStart( int[] expectedArray, int[] actualArray)
+        public void CopyArrayAtTheStart_WhenAllCondition_CopyArrayAtTheStart( int[] expectedArray, int[] actualArray, int[] newArray)
         {
             ArrayList expected = new ArrayList(expectedArray);
             ArrayList actual = new ArrayList(actualArray);
-            actual.CopyArrayAtTheStart();
+            actual.CopyArrayAtTheStart(newArray);
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase(0, new int[] { 1, 2, 3, 1, 2, 3 }, new int[] { 1, 2, 3 })]
-        [TestCase(2, new int[] { 1, 2, 1, 2, 3, 3 }, new int[] { 1, 2, 3 })]
-        [TestCase(0, new int[] { }, new int[] { })]
+        [TestCase(0, new int[] { 22, 33, 44, 1, 2, 3 }, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
+        [TestCase(2, new int[] { 1, 2, 22, 33, 44, 3 }, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
+        [TestCase(0, new int[] { }, new int[] { }, new int[] { })]
 
-        public void CopyArrayAtTheIndex_WhenAllCondition_CopyArrayAtTheIndex(int index, int[] expectedArray, int[] actualArray)
+        public void CopyArrayAtTheIndex_WhenAllCondition_CopyArrayAtTheIndex(int index, int[] expectedArray, int[] actualArray, int[] newArray)
         {
             ArrayList expected = new ArrayList(expectedArray);
             ArrayList actual = new ArrayList(actualArray);
-            actual.CopyArrayAtTheIndex(index);
+            actual.CopyArrayAtTheIndex(index, newArray);
             Assert.AreEqual(expected, actual);
         }
 
@@ -379,13 +379,13 @@ namespace List.Tests
             Assert.Throws<IndexOutOfRangeException>(() => { int t = array[index]; });
         }
 
-        [TestCase(-1, new int[] { 1, 2, 3 })]
-        [TestCase(4, new int[] { 1, 2, 3 })]
+        [TestCase(-1, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
+        [TestCase(4, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
 
-        public void CopyArrayAtTheIndexException(int index, int[] actualArray)
+        public void CopyArrayAtTheIndexException(int index, int[] actualArray, int[] newArray)
         {
             ArrayList array = new ArrayList(actualArray);
-            Assert.Throws<IndexOutOfRangeException>(() => array.CopyArrayAtTheIndex(index));
+            Assert.Throws<IndexOutOfRangeException>(() => array.CopyArrayAtTheIndex(index, newArray));
         }
     }
 }

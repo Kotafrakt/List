@@ -283,17 +283,17 @@ namespace List
             }
             return sum;
         }
-        public void CopyArrayAtTheEnd()
+        public void CopyArrayAtTheEnd(int[] newArray)
         {
-            CopyArrayAtTheIndex(Length);
+            CopyArrayAtTheIndex(Length, newArray);
         }
-        public void CopyArrayAtTheStart()
+        public void CopyArrayAtTheStart(int[] newArray)
         {
-            CopyArrayAtTheIndex(0);
+            CopyArrayAtTheIndex(0, newArray);
         }
-        public void CopyArrayAtTheIndex(int index)
+        public void CopyArrayAtTheIndex(int index,int[] newArray)
         {
-            //CheckIndexException(index);
+            CheckIndexException(index);
             //int[] tmpArray = new int[_array.Length * 2];
             //for (int i = 0; i < _array.Length; i++)
             //{
@@ -314,6 +314,24 @@ namespace List
             //}
             //Length = Length * 2;
 
+            int[] tmpArray = new int[_array.Length + newArray.Length];
+            for (int i = 0; i < index; i++)
+            {
+                tmpArray[i] = _array[i];
+            }
+
+            for (int i = index; i < index+newArray.Length; i++)
+            {
+                tmpArray[i] = newArray[i- index];
+            }
+
+            for (int i = index+newArray.Length; i < Length+ newArray.Length; i++)
+            {
+                tmpArray[i] = _array[i - newArray.Length];
+            }
+
+            Length = Length + newArray.Length;
+            _array = tmpArray;
         }
 
         public override bool Equals(object obj)
