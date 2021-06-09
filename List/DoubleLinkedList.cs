@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace List
 {
-    public class DoubleLinkedList
+    public class DoubleLinkedList : IList
     {
         public int Length { get; private set; }
         public int this[int index]
@@ -367,6 +367,26 @@ namespace List
                 sum++;
             }
             return sum;
+        }
+
+        public void RemoveByIndexElements(int index, int n)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyArrayAtTheEnd(int[] newArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyArrayAtTheStart(int[] newArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyArrayAtTheIndex(int index, int[] newArray)
+        {
+            throw new NotImplementedException();
         }
 
         public override string ToString()
