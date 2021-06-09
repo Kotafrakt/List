@@ -430,17 +430,62 @@ namespace List
 
         public void CopyArrayAtTheEnd(int[] newArray)
         {
-            throw new NotImplementedException();
+            LinkedList tmp = new LinkedList(newArray);
+            if (Length==0)
+            {
+                _root = tmp._root;
+                _tail = tmp._tail;
+                Length = tmp.Length;
+            }
+            else
+            {
+                Node current = _tail;
+                current.Next = tmp._root;
+                Length = tmp.Length + Length;
+                _tail = FindNodeByIndex(Length - 1);
+                _tail.Next = null;
+            }
+            
         }
 
         public void CopyArrayAtTheStart(int[] newArray)
         {
-            throw new NotImplementedException();
+            LinkedList tmp = new LinkedList(newArray);
+            if (Length == 0)
+            {
+                _root = tmp._root;
+                _tail = tmp._tail;
+                Length = tmp.Length;
+            }
+            else
+            {
+                tmp._tail.Next = _root;
+                _root = tmp._root;
+                Length += tmp.Length;
+            }
         }
 
         public void CopyArrayAtTheIndex(int index, int[] newArray)
         {
-            throw new NotImplementedException();
+            CheckIndexException(index);
+            if (index==0)
+            {
+                CopyArrayAtTheStart(newArray);
+            }
+            else
+            if (index==Length)
+            {
+                CopyArrayAtTheEnd(newArray);
+            }
+            else
+            {
+                LinkedList tmp = new LinkedList(newArray);
+                Node current = FindNodeByIndex(index - 1);
+                tmp._tail.Next = current.Next; 
+                
+                current.Next = tmp._root;
+                Length += tmp.Length;
+            }
         }
 
         public override string ToString()

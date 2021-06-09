@@ -4,8 +4,8 @@ using System;
 namespace List.Tests
 {
     [TestFixture("LinkedList")]
-   // [TestFixture("ArrayList")]
-   // [TestFixture("DoubleLinkedList")]
+    [TestFixture("ArrayList")]
+    [TestFixture("DoubleLinkedList")]
     public class ListsTests
     {
         IList actual;
@@ -27,15 +27,15 @@ namespace List.Tests
                     expected = new LinkedList(expectedArray);
                     break;
 
-                //case "ArrayList":
-                //    actual = new ArrayList(array);
-                //    expected = new ArrayList(expectedArray);
-                //    break;
+                case "ArrayList":
+                    actual = new ArrayList(array);
+                    expected = new ArrayList(expectedArray);
+                    break;
 
-                //case "DoubleLinkedList":
-                //    actual = new DoubleLinkedList(array);
-                //    expected = new DoubleLinkedList(expectedArray);
-                //    break;
+                case "DoubleLinkedList":
+                    actual = new DoubleLinkedList(array);
+                    expected = new DoubleLinkedList(expectedArray);
+                    break;
             }
         }
 
@@ -48,15 +48,15 @@ namespace List.Tests
                     
                     break;
 
-                //case "ArrayList":
-                //    actual = new ArrayList(array);
-                    
-                //    break;
+                case "ArrayList":
+                    actual = new ArrayList(array);
 
-                //case "DoubleLinkedList":
-                //    actual = new DoubleLinkedList(array);
-                    
-                //    break;
+                    break;
+
+                case "DoubleLinkedList":
+                    actual = new DoubleLinkedList(array);
+
+                    break;
             }
         }
 
@@ -320,6 +320,7 @@ namespace List.Tests
         [TestCase(0, new int[] { 22, 33, 44, 1, 2, 3 }, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
         [TestCase(2, new int[] { 1, 2, 22, 33, 44, 3 }, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
         [TestCase(0, new int[] { }, new int[] { }, new int[] { })]
+        [TestCase(3, new int[] { 1, 2, 22, 22, 33, 44 }, new int[] { 1, 2, 22 }, new int[] { 22, 33, 44 })]
 
         public void CopyArrayAtTheIndex_WhenAllCondition_CopyArrayAtTheIndex(int index, int[] expectedArray, int[] actualArray, int[] newArray)
         {
