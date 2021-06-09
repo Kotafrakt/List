@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "List", "List\List.csproj", "{3150DB3A-6A55-4A4B-B874-6E2AFA3CC8F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListTests", "ListTests\ListTests.csproj", "{0D536A17-D6C0-4A60-82E8-244E7452E256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "List.Tests", "ListTests\List.Tests.csproj", "{0D536A17-D6C0-4A60-82E8-244E7452E256}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3150DB3A-6A55-4A4B-B874-6E2AFA3CC8F2} = {3150DB3A-6A55-4A4B-B874-6E2AFA3CC8F2}
 	EndProjectSection

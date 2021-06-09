@@ -3,8 +3,43 @@ using System;
 
 namespace List.Tests
 {
+    [TestFixture("LinkedList")]
+    [TestFixture("ArrayList")]
+    [TestFixture("DoubleLinkedList")]
     public class ArrayListsTests
     {
+        IList actual;
+        IList expected;
+
+        string s = "";
+
+        public Tests(string type)
+        {
+            s = type;
+        }
+
+        public void Setup(int[] array, int[] expectedArray)
+        {
+            switch (s)
+            {
+                case "LinkedList":
+                    actual = new LinkedList(array);
+                    expected = new LinkedList(expectedArray);
+                    break;
+
+                case "ArrayList":
+                    actual = new ArrayList(array);
+                    expected = new ArrayList(expectedArray);
+                    break;
+
+                case "DoubleLinkedList":
+                    actual = new DoubleLinkedList(array);
+                    expected = new DoubleLinkedList(expectedArray);
+                    break;
+            }
+        }
+
+
         [TestCase(14, new int[] { 1, 2, 3, 14 }, new int[] { 1, 2, 3 })]
         [TestCase(111, new int[] { 1, 2, 3, 111 }, new int[] { 1, 2, 3 })]
         [TestCase(22, new int[] { 22 }, new int[] { })]

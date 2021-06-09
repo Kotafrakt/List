@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace List
 {
-    public class ArrayList
+    public class ArrayList: IList
     {
         public int Length { get; private set; }
         private int[] _array;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace List
 {
-    public class LinkedList
+    public class LinkedList: IList
     {
         public int Length { get; private set; }
         public int this[int index]
@@ -361,6 +361,22 @@ namespace List
                 sum++;
             }
             return sum;
+        }
+
+
+        public void CopyArrayAtTheEnd(int[] newArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyArrayAtTheStart(int[] newArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyArrayAtTheIndex(int index, int[] newArray)
+        {
+            throw new NotImplementedException();
         }
 
         public override string ToString()
