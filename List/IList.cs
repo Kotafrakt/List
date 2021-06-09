@@ -11,6 +11,10 @@ namespace List
         virtual int this[int index]
         {
             get { return 0;}
+            set
+            {
+                this[index] = value;
+            }
         }
         void Add(int value);
         void AddFirst(int value);

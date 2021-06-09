@@ -272,29 +272,28 @@ namespace List.Tests
             Assert.AreEqual(expected, tmp);
         }
 
-        //[TestCase(1, 2, new int[] { 1, 2, 3 })]
-        //[TestCase(0, 1, new int[] { 1, 2, 5, 4, 0 })]
-        //[TestCase(4, 55, new int[] { 12, 22, 12, 12, 55, 12 })]
+        [TestCase(1, 2, new int[] { 1, 2, 3 })]
+        [TestCase(0, 1, new int[] { 1, 2, 5, 4, 0 })]
+        [TestCase(4, 55, new int[] { 12, 22, 12, 12, 55, 12 })]
 
-        //public void GetIndex_WhenIndexInArray_GetIndex(int index, int expected, int[] actualArray)
-        //{
-        //    SetupOne(actualArray);
-        //    int tmp = actual[index];
-        //    Assert.AreEqual(expected, actual);
-        //}
+        public void GetIndex_WhenIndexInArray_GetIndex(int index, int expected, int[] actualArray)
+        {
+            SetupOne(actualArray);
+            int tmp = actual[index];
+            Assert.AreEqual(expected, tmp);
+        }
 
-        //[TestCase(2, 3, 3, new int[] { 1, 2, 3 })]
-        //[TestCase(1, 777, 777, new int[] { 1, 2, 5, 4, 0 })]
-        //[TestCase(0, 4, 4, new int[] { 12, 22, 12, 12, 55, 12 })]
+        [TestCase(2, 3, 3, new int[] { 1, 2, 3 })]
+        [TestCase(1, 777, 777, new int[] { 1, 2, 5, 4, 0 })]
+        [TestCase(0, 4, 4, new int[] { 12, 22, 12, 12, 55, 12 })]
 
-        //public void SetIndex_WhenIndexInArray_SetIndex(int index, int value, int expected, int[] actualArray)
-        //{
-        //    SetupOne(actualArray);
-        //    ArrayList array = new ArrayList(actualArray);
-        //    actual[index] = value;
-        //    int tmp = actual[index];
-        //    Assert.AreEqual(expected, tmp);
-        //}
+        public void SetIndex_WhenIndexInArray_SetIndex(int index, int value, int expected, int[] actualArray)
+        {
+            SetupOne(actualArray);
+            actual[index] = value;
+            int tmp = actual[index];
+            Assert.AreEqual(expected, tmp);
+        }
 
         [TestCase(new int[] { 1, 2, 3, 22, 33, 44  }, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
         [TestCase(new int[] { 1, 2, 22, 33, 44 }, new int[] { 1, 2 }, new int[] { 22, 33, 44 })]
