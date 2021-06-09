@@ -4,8 +4,8 @@ using System;
 namespace List.Tests
 {
     [TestFixture("LinkedList")]
-    [TestFixture("ArrayList")]
-    [TestFixture("DoubleLinkedList")]
+   // [TestFixture("ArrayList")]
+   // [TestFixture("DoubleLinkedList")]
     public class ListsTests
     {
         IList actual;
@@ -27,15 +27,15 @@ namespace List.Tests
                     expected = new LinkedList(expectedArray);
                     break;
 
-                case "ArrayList":
-                    actual = new ArrayList(array);
-                    expected = new ArrayList(expectedArray);
-                    break;
+                //case "ArrayList":
+                //    actual = new ArrayList(array);
+                //    expected = new ArrayList(expectedArray);
+                //    break;
 
-                case "DoubleLinkedList":
-                    actual = new DoubleLinkedList(array);
-                    expected = new DoubleLinkedList(expectedArray);
-                    break;
+                //case "DoubleLinkedList":
+                //    actual = new DoubleLinkedList(array);
+                //    expected = new DoubleLinkedList(expectedArray);
+                //    break;
             }
         }
 
@@ -48,15 +48,15 @@ namespace List.Tests
                     
                     break;
 
-                case "ArrayList":
-                    actual = new ArrayList(array);
+                //case "ArrayList":
+                //    actual = new ArrayList(array);
                     
-                    break;
+                //    break;
 
-                case "DoubleLinkedList":
-                    actual = new DoubleLinkedList(array);
+                //case "DoubleLinkedList":
+                //    actual = new DoubleLinkedList(array);
                     
-                    break;
+                //    break;
             }
         }
 
@@ -151,16 +151,16 @@ namespace List.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase(1, 2, new int[] { 1 }, new int[] { 1, 2, 3 })]
-        [TestCase(0, 0, new int[] { 1, 2 }, new int[] { 1, 2 })]
-        [TestCase(3, 2, new int[] { 12, 22, 33 }, new int[] { 12, 22, 33, 55, 743 })]
+        //[TestCase(1, 2, new int[] { 1 }, new int[] { 1, 2, 3 })]
+        //[TestCase(0, 0, new int[] { 1, 2 }, new int[] { 1, 2 })]
+        //[TestCase(3, 2, new int[] { 12, 22, 33 }, new int[] { 12, 22, 33, 55, 743 })]
 
-        public void RemoveByIndexElements_WhenLengthMinusIndexMoreValue_ShouldRemoveByIndexElements(int index, int value, int[] expectedArray, int[] actualArray)
-        {
-            SetupTwo(actualArray, expectedArray);
-            actual.RemoveByIndexElements(index, value);
-            Assert.AreEqual(expected, actual);
-        }
+        //public void RemoveByIndexElements_WhenLengthMinusIndexMoreValue_ShouldRemoveByIndexElements(int index, int value, int[] expectedArray, int[] actualArray)
+        //{
+        //    SetupTwo(actualArray, expectedArray);
+        //    actual.RemoveByIndexElements(index, value);
+        //    Assert.AreEqual(expected, actual);
+        //}
 
         [TestCase(1, 0, new int[] { 1, 2, 3 })]
         [TestCase(0, -1, new int[] { 1, 2 })]
@@ -272,26 +272,26 @@ namespace List.Tests
             Assert.AreEqual(expected, tmp);
         }
 
-        [TestCase(1, 2, new int[] { 1, 2, 3 })]
-        [TestCase(0, 1, new int[] { 1, 2, 5, 4, 0 })]
-        [TestCase(4, 55, new int[] { 12, 22, 12, 12, 55, 12 })]
+        //[TestCase(1, 2, new int[] { 1, 2, 3 })]
+        //[TestCase(0, 1, new int[] { 1, 2, 5, 4, 0 })]
+        //[TestCase(4, 55, new int[] { 12, 22, 12, 12, 55, 12 })]
 
         //public void GetIndex_WhenIndexInArray_GetIndex(int index, int expected, int[] actualArray)
-        //{ 
+        //{
         //    SetupOne(actualArray);
         //    int tmp = actual[index];
         //    Assert.AreEqual(expected, actual);
         //}
 
-        [TestCase(2, 3, 3, new int[] { 1, 2, 3 })]
-        [TestCase(1, 777, 777, new int[] { 1, 2, 5, 4, 0 })]
-        [TestCase(0, 4, 4, new int[] { 12, 22, 12, 12, 55, 12 })]
+        //[TestCase(2, 3, 3, new int[] { 1, 2, 3 })]
+        //[TestCase(1, 777, 777, new int[] { 1, 2, 5, 4, 0 })]
+        //[TestCase(0, 4, 4, new int[] { 12, 22, 12, 12, 55, 12 })]
 
         //public void SetIndex_WhenIndexInArray_SetIndex(int index, int value, int expected, int[] actualArray)
         //{
         //    SetupOne(actualArray);
         //    ArrayList array = new ArrayList(actualArray);
-        //    actual[index]=value;
+        //    actual[index] = value;
         //    int tmp = actual[index];
         //    Assert.AreEqual(expected, tmp);
         //}
@@ -414,12 +414,13 @@ namespace List.Tests
             SetupOne(actualArray);
             Assert.Throws<IndexOutOfRangeException>(() => actual.GetMinIndex());
         }
-        //[TestCase(1, -5, new int[] { 1, 2, 3 })]
-        //public void AddByIndexException3(int value, int index, int[] actualArray)
-        //{
-        //    SetupOne(actualArray);
-        //    Assert.Throws<IndexOutOfRangeException>(() => { int t = actual[index]; });
-        //}
+
+        [TestCase(1, -5, new int[] { 1, 2, 3 })]
+        public void AddByIndexException3(int value, int index, int[] actualArray)
+        {
+            SetupOne(actualArray);
+            Assert.Throws<IndexOutOfRangeException>(() => { int t = actual[5]; });
+        }
 
         [TestCase(-1, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]
         [TestCase(4, new int[] { 1, 2, 3 }, new int[] { 22, 33, 44 })]

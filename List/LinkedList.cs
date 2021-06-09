@@ -13,6 +13,7 @@ namespace List
         {
             get
             {
+                CheckIndexException(index);
                 Node current = FindNodeByIndex(index);
                 return current.Value;
             }
@@ -80,6 +81,7 @@ namespace List
 
         public void AddByIndex(int value, int index)
         {
+            CheckIndexException(index);
             if (Length == 0)
             {
                 CreateOneValueList(value);
@@ -104,22 +106,29 @@ namespace List
 
         public void RemoveLast()
         {
-            if (Length == 1)
+            if (Length != 0)
             {
-                _root = null;
+                if (Length == 1)
+                {
+                    _root = null;
+                }
+                if (Length == 2)
+                {
+                    _root.Next = null;
+                    _tail = _root;
+                }
+                if (Length > 2)
+                {
+                    Node current = FindNodeByIndex(Length - 2);
+                    current.Next = null;
+                    _tail = current;
+                }
+                Length--;
             }
-            if (Length == 2)
+            else
             {
-                _root.Next = null;
-                _tail = _root;
+                CheckLengthZeroException();
             }
-            if (Length > 2)
-            {
-                Node current = FindNodeByIndex(Length - 2);
-                current.Next = null;
-                _tail = current;
-            }
-            Length--;
         }
 
         public void RemoveFirst()
@@ -137,34 +146,49 @@ namespace List
 
         public void RemoveByIndex(int index)
         {
-            if (Length == 1)
+            if (Length != 0)
             {
-                CreateSpaceList();
-            }
-            else
-            {
-                if (index == 0)
+                CheckIndexException(index);
+                if (Length == 1)
                 {
-                    RemoveFirst();
+                    CreateSpaceList();
                 }
                 else
                 {
-                    if (index == Length - 1)
+                    if (index == 0)
                     {
-                        RemoveLast();
+                        RemoveFirst();
                     }
                     else
                     {
-                        Node current = FindNodeByIndex(index - 1);
-                        current.Next = current.Next.Next;
-                        Length--;
+                        if (index == Length - 1)
+                        {
+                            RemoveLast();
+                        }
+                        else
+                        {
+                            Node current = FindNodeByIndex(index - 1);
+                            current.Next = current.Next.Next;
+                            Length--;
+                        }
                     }
                 }
+
+            }
+            else
+            {
+                CheckLengthZeroException();
             }
         }
 
         public void RemoveLastElements(int amount)
         {
+            if (amount > Length)
+            {
+                throw new ArgumentOutOfRangeException("массив меньше количества удаляемых элементов");
+            }
+
+            CheckElements(amount);
             Node current = FindNodeByIndex(Length - amount - 1);
             current.Next = null;
             _tail = current;
@@ -180,6 +204,12 @@ namespace List
 
         public void RemoveByIndexElements(int index, int amount)
         {
+            CheckIndexException(index);
+            if (Length - index < amount)
+            {
+                throw new IndexOutOfRangeException("длина массива после индекса меньше количества удаляемых элементов");
+            }
+            CheckElements(amount);
             Node current = FindNodeByIndex(index - 1);
             Node next = FindNodeByIndex(index + amount);
             current.Next = next;
@@ -254,6 +284,7 @@ namespace List
 
         public int GetMax()
         {
+            CheckLengthZeroException();
             Node current = _root;
             int max = current.Value;
             while (!(current is null))
@@ -268,6 +299,7 @@ namespace List
         }
         public int GetMin()
         {
+            CheckLengthZeroException();
             Node current = _root;
             int min = current.Value;
             while (!(current is null))
@@ -282,6 +314,7 @@ namespace List
         }
         public int GetMaxIndex()
         {
+            CheckLengthZeroException();
             Node current = _root;
             int max = current.Value;
             int index = 0;
@@ -300,6 +333,7 @@ namespace List
         }
         public int GetMinIndex()
         {
+            CheckLengthZeroException();
             Node current = _root;
             int min = current.Value;
             int index = 0;
@@ -318,21 +352,51 @@ namespace List
         }
         public void UpSort()
         {
-            Node current = _root;
             int tmp;
-            while (!(current.Next is null))
+            int tmp2;
+
+            for (int i = 0; i < Length; i++)
             {
-                if (current.Value > current.Next.Value)
+                Node current = _root;
+                for (int j = 0; j < Length; j++)
                 {
-                    tmp = current.Value;
-                    current.Value = current.Next.Value;
-                    current.Next.Value = tmp;
+                    if (current.Next!=null)
+                    {
+                        tmp = current.Value;
+                        tmp2 = current.Next.Value;
+                        if (current.Value > current.Next.Value)
+                        {
+                            current.Value = tmp2;
+                            current.Next.Value = tmp;
+                        }
+                    }
+                    current = current.Next;
                 }
-                current = current.Next;
             }
         }
         public void DownSort()
         {
+            int tmp;
+            int tmp2;
+
+            for (int i = 0; i < Length; i++)
+            {
+                Node current = _root;
+                for (int j = 0; j < Length; j++)
+                {
+                    if (current.Next != null)
+                    {
+                        tmp = current.Value;
+                        tmp2 = current.Next.Value;
+                        if (current.Value < current.Next.Value)
+                        {
+                            current.Value = tmp2;
+                            current.Next.Value = tmp;
+                        }
+                    }
+                    current = current.Next;
+                }
+            }
         }
         public int RemoveFirstByValue(int value)
         {
@@ -489,6 +553,27 @@ namespace List
                 current = current.Next;
             }
             return current;
+        }
+        private void CheckIndexException(int index)
+        {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
+        }
+        private void CheckLengthZeroException()
+        {
+            if (Length <= 0)
+            {
+                throw new IndexOutOfRangeException("массив пустой");
+            }
+        }
+        private void CheckElements(int n)
+        {
+            if (n < 0)
+            {
+                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
+            }
         }
     }
 }

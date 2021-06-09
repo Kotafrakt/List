@@ -8,6 +8,10 @@ namespace List
 {
     public interface IList
     {
+        virtual int this[int index]
+        {
+            get { return 0;}
+        }
         void Add(int value);
         void AddFirst(int value);
         void AddByIndex(int value, int index);

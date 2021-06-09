@@ -104,14 +104,14 @@ namespace List
                 CheckLengthZeroException();
             }
         }
-        public void RemoveLastElements(int n)
+        public void RemoveLastElements(int amount)
         {
-            if (n > Length)
+            if (amount > Length)
             {
                 throw new ArgumentOutOfRangeException("массив меньше количества удаляемых элементов");
             }
-            CheckElements(n);
-            Length -= n;
+            CheckElements(amount);
+            Length -= amount;
             if (Length < (_array.Length / 2))
             {
                 DownSize();

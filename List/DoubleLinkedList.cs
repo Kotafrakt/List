@@ -13,6 +13,7 @@ namespace List
         {
             get
             {
+                CheckIndexException(index);
                 DoubleNode current = FindNodeByIndex(index);
                 return current.Value;
             }
@@ -159,6 +160,11 @@ namespace List
 
         public void RemoveLastElements(int amount)
         {
+            if (amount > Length)
+            {
+                throw new ArgumentOutOfRangeException("массив меньше количества удаляемых элементов");
+            }
+            CheckElements(amount);
             DoubleNode current = FindNodeByIndex(Length - amount - 1);
             current.Next = null;
             _tail = current;
@@ -173,7 +179,7 @@ namespace List
             Length -= amount;
         }
 
-        public void RemoveElementsByIndex(int index, int amount)
+        public void RemoveByIndexElements(int index, int amount)
         {
             if (index == 0)
             {
@@ -369,11 +375,6 @@ namespace List
             return sum;
         }
 
-        public void RemoveByIndexElements(int index, int n)
-        {
-            throw new NotImplementedException();
-        }
-
         public void CopyArrayAtTheEnd(int[] newArray)
         {
             throw new NotImplementedException();
@@ -489,6 +490,20 @@ namespace List
                 }
             }
             return current;
+        }
+        private void CheckElements(int n)
+        {
+            if (n < 0)
+            {
+                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
+            }
+        }
+        private void CheckIndexException(int index)
+        {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
         }
     }
 }
