@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace List
 {
-    public class DoubleLinkedList
+    public class DoubleLinkedList : IList
     {
         public int Length { get; private set; }
         public int this[int index]
         {
             get
             {
+                CheckIndexException(index);
                 DoubleNode current = FindNodeByIndex(index);
                 return current.Value;
             }
@@ -67,15 +68,22 @@ namespace List
         }
         public void AddFirst(int value)
         {
-            //добавить при 0 и 1
-            DoubleNode tmp = new DoubleNode(value);
-            tmp.Next = _root;
-            _root = tmp;
-            Length++;
+            if (Length == 0)
+            {
+                CreateOneValueList(value);
+            }
+            else
+            {
+                DoubleNode tmp = new DoubleNode(value);
+                tmp.Next = _root;
+                _root = tmp;
+                Length++;
+            }
         }
 
         public void AddByIndex(int value, int index)
         {
+            CheckIndexException(index);
             if (Length == 0)
             {
                 CreateOneValueList(value);
@@ -96,22 +104,31 @@ namespace List
                 tmp.Previous = current.Previous;
                 current.Previous.Next = tmp;
                 current.Previous = tmp;
+                Length++;
             }
-            Length++;
         }
 
         public void RemoveLast()
         {
-            if (Length == 1)
+            if (Length <= 0)
             {
-                CreateSpaceList();
+                CheckLengthZeroException();
             }
             else
             {
-                _tail = _tail.Previous;
-                _tail.Next = null;
-                Length--;
+                if (Length == 1)
+                {
+                    CreateSpaceList();
+                }
+                else
+                {
+                    _tail = _tail.Previous;
+                    _tail.Next = null;
+                    Length--;
+                }
             }
+            
+            
         }
 
         public void RemoveFirst()
@@ -130,6 +147,15 @@ namespace List
 
         public void RemoveByIndex(int index)
         {
+            if (Length != 0)
+            {
+                CheckIndexException(index);
+            }
+            else
+            {
+                CheckLengthZeroException();
+            }
+
             if (Length == 1)
             {
                 CreateSpaceList();
@@ -159,6 +185,11 @@ namespace List
 
         public void RemoveLastElements(int amount)
         {
+            if (amount > Length)
+            {
+                throw new ArgumentOutOfRangeException("массив меньше количества удаляемых элементов");
+            }
+            CheckElements(amount);
             DoubleNode current = FindNodeByIndex(Length - amount - 1);
             current.Next = null;
             _tail = current;
@@ -173,8 +204,14 @@ namespace List
             Length -= amount;
         }
 
-        public void RemoveElementsByIndex(int index, int amount)
+        public void RemoveByIndexElements(int index, int amount)
         {
+            CheckIndexException(index);
+            if (Length - index < amount)
+            {
+                throw new IndexOutOfRangeException("длина массива после индекса меньше количества удаляемых элементов");
+            }
+            CheckElements(amount);
             if (index == 0)
             {
                 RemoveFirstElements(amount);
@@ -223,23 +260,27 @@ namespace List
 
         public void Reverse()
         {
-            DoubleNode current = _root;
-            _tail = _root;
-            _tail.Previous = _root.Next;
-            DoubleNode tmp = _root;
-            current = current.Next;
-            while (!(current.Next is null))
+            if (!(Length < 2))
             {
-                tmp = current;
+                DoubleNode current = _root;
+                _tail = _root;
+                _tail.Previous = _root.Next;
+                DoubleNode tmp = _root;
                 current = current.Next;
-                tmp.Next = _root;
-                tmp.Previous = current;
-                _root = tmp;
+                while (!(current.Next is null))
+                {
+                    tmp = current;
+                    current = current.Next;
+                    tmp.Next = _root;
+                    tmp.Previous = current;
+                    _root = tmp;
+                }
+
+                _tail.Next = null;
+                _root = current;
+                _root.Next = tmp;
+                _root.Previous = null;
             }
-            _tail.Next = null;
-            _root = current;
-            _root.Next = tmp;
-            _root.Previous = null;
 
             //DoubleNode current = _root;
             //DoubleNode tmp = _root;
@@ -260,9 +301,10 @@ namespace List
 
         public int GetMax()
         {
+            CheckLengthZeroException();
             DoubleNode current = _root;
             int max = current.Value;
-            while (!(current.Next is null))
+            while (!(current is null))
             {
                 if (current.Value > max)
                 {
@@ -274,9 +316,10 @@ namespace List
         }
         public int GetMin()
         {
+            CheckLengthZeroException();
             DoubleNode current = _root;
             int min = current.Value;
-            while (!(current.Next is null))
+            while (!(current is null))
             {
                 if (current.Value < min)
                 {
@@ -288,11 +331,12 @@ namespace List
         }
         public int GetMaxIndex()
         {
+            CheckLengthZeroException();
             DoubleNode current = _root;
             int max = current.Value;
             int index = 0;
             int count = 0;
-            while (!(current.Next is null))
+            while (!(current is null))
             {
                 if (current.Value > max)
                 {
@@ -306,11 +350,12 @@ namespace List
         }
         public int GetMinIndex()
         {
+            CheckLengthZeroException();
             DoubleNode current = _root;
             int min = current.Value;
             int index = 0;
             int count = 0;
-            while (!(current.Next is null))
+            while (!(current is null))
             {
                 if (current.Value < min)
                 {
@@ -324,21 +369,63 @@ namespace List
         }
         public void UpSort()
         {
-            DoubleNode current = _root;
             int tmp;
-            while (!(current.Next is null))
+            int tmp2;
+
+            for (int i = 0; i < Length; i++)
             {
-                if (current.Value > current.Next.Value)
+                DoubleNode current = _root;
+                for (int j = 0; j < Length; j++)
                 {
-                    tmp = current.Value;
-                    current.Value = current.Next.Value;
-                    current.Next.Value = tmp;
+                    if (current.Next != null)
+                    {
+                        tmp = current.Value;
+                        tmp2 = current.Next.Value;
+                        if (current.Value > current.Next.Value)
+                        {
+                            current.Value = tmp2;
+                            current.Next.Value = tmp;
+                        }
+                    }
+                    current = current.Next;
                 }
-                current = current.Next;
             }
+            //DoubleNode current = _root;
+            //int tmp;
+            //while (!(current.Next is null))
+            //{
+            //    if (current.Value > current.Next.Value)
+            //    {
+            //        tmp = current.Value;
+            //        current.Value = current.Next.Value;
+            //        current.Next.Value = tmp;
+            //    }
+            //    current = current.Next;
+            //}
         }
         public void DownSort()
         {
+            int tmp;
+            int tmp2;
+
+            for (int i = 0; i < Length; i++)
+            {
+                DoubleNode current = _root;
+                for (int j = 0; j < Length; j++)
+                {
+                    if (current.Next != null)
+                    {
+                        tmp = current.Value;
+                        tmp2 = current.Next.Value;
+                        if (current.Value < current.Next.Value)
+                        {
+                            current.Value = tmp2;
+                            current.Next.Value = tmp;
+                        }
+                    }
+                    current = current.Next;
+                }
+            }
         }
         public int RemoveFirstByValue(int value)
         {
@@ -367,6 +454,63 @@ namespace List
                 sum++;
             }
             return sum;
+        }
+
+        public void CopyArrayAtTheEnd(int[] newArray)
+        {
+            DoubleLinkedList tmp = new DoubleLinkedList(newArray);
+            if (Length == 0)
+            {
+                _root = tmp._root;
+                _tail = tmp._tail;
+                Length = tmp.Length;
+            }
+            else
+            {
+                DoubleNode current = _tail;
+                current.Next = tmp._root;
+                Length = tmp.Length + Length;
+                _tail = tmp._tail;
+            }
+        }
+
+        public void CopyArrayAtTheStart(int[] newArray)
+        {
+            DoubleLinkedList tmp = new DoubleLinkedList(newArray);
+            if (Length == 0)
+            {
+                _root = tmp._root;
+                _tail = tmp._tail;
+                Length = tmp.Length;
+            }
+            else
+            {
+                tmp._tail.Next = _root;
+                _root = tmp._root;
+                Length += tmp.Length;
+            }
+        }
+
+        public void CopyArrayAtTheIndex(int index, int[] newArray)
+        {
+            CheckIndexException(index);
+            if (index == 0)
+            {
+                CopyArrayAtTheStart(newArray);
+            }
+            else
+            if (index == Length)
+            {
+                CopyArrayAtTheEnd(newArray);
+            }
+            else
+            {
+                DoubleLinkedList tmp = new DoubleLinkedList(newArray);
+                DoubleNode current = FindNodeByIndex(index - 1);
+                tmp._tail.Next = current.Next;
+                current.Next = tmp._root;
+                Length += tmp.Length;
+            }
         }
 
         public override string ToString()
@@ -469,6 +613,27 @@ namespace List
                 }
             }
             return current;
+        }
+        private void CheckElements(int n)
+        {
+            if (n < 0)
+            {
+                throw new ArgumentException("нельзя удалить отрицательное количество элементов");
+            }
+        }
+        private void CheckIndexException(int index)
+        {
+            if (index > Length || index < 0)
+            {
+                throw new IndexOutOfRangeException("индекс не входит в массив");
+            }
+        }
+        private void CheckLengthZeroException()
+        {
+            if (Length <= 0)
+            {
+                throw new IndexOutOfRangeException("массив пустой");
+            }
         }
     }
 }
